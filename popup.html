@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ciro</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <!-- ===================== OUTER WRAPPER ===================== -->
+  <div class="outer-shell" id="outerShell">
+    <div class="inner-card" id="innerCard">
+
+      <!-- ===================== HEADER ===================== -->
+      <header class="header">
+        <div class="header-left">
+          <!-- Back button: visible on sub-pages (Tasks, Settings) -->
+          <button class="back-btn hidden" id="btnBack" title="Back">
+            <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor">
+              <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+            </svg>
+          </button>
+
+          <!-- Logo + text: always navigates home, restores last mode -->
+          <div class="logo-wrap" id="logoLink" title="Home">
+            <div class="logo-box">
+              <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="4"  y="4"  width="32" height="32" rx="4" stroke="#F5C842" stroke-width="2.5" fill="none"/>
+                <rect x="8"  y="8"  width="24" height="24" rx="2" stroke="#F5C842" stroke-width="2"   fill="none"/>
+                <rect x="2"  y="10" width="6"  height="20" fill="#F5C842"/>
+                <rect x="10" y="2"  width="20" height="6"  fill="#F5C842"/>
+                <rect x="10" y="32" width="20" height="6"  fill="#F5C842"/>
+                <rect x="32" y="10" width="6"  height="8"  fill="#F5C842"/>
+                <rect x="32" y="22" width="6"  height="8"  fill="#F5C842"/>
+                <rect x="18" y="14" width="10" height="12" fill="#F5C842"/>
+              </svg>
+            </div>
+            <span class="logo-text">Ciro</span>
+          </div>
+        </div>
+
+        <div class="header-right">
+          <span class="header-tasks" id="btnTasks">Tasks</span>
+          <button class="icon-btn" id="btnSettings" title="Settings">
+            <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor">
+              <path d="M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zm0 6a2 2 0 1 1 0-4 2 2 0 0 1 0 4z"/>
+              <path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65a.5.5 0 0 0 .12-.64l-2-3.46a.5.5 0 0 0-.61-.22l-2.49 1a7.37 7.37 0 0 0-1.67-.97l-.38-2.65A.49.49 0 0 0 14 2h-4a.49.49 0 0 0-.49.42l-.38 2.65c-.61.25-1.17.59-1.67.97l-2.49-1a.5.5 0 0 0-.61.22l-2 3.46a.49.49 0 0 0 .12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98L2.46 14.63a.5.5 0 0 0-.12.64l2 3.46a.5.5 0 0 0 .61.22l2.49-1c.5.38 1.06.72 1.67.97l.38 2.65c.07.24.29.42.49.42h4c.24 0 .44-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.67-.97l2.49 1a.5.5 0 0 0 .61-.22l2-3.46a.49.49 0 0 0-.12-.64l-2.11-1.65z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- ===================== PAGE: TIMER (HOME) ===================== -->
+      <section class="page active" id="pageTimer">
+
+        <!-- Mode toggle buttons -->
+        <div class="mode-toggle">
+          <button class="mode-btn active" id="modeTimerBtn">Timer</button>
+          <button class="mode-btn"        id="modePomodoroBtn">Pomodoro</button>
+        </div>
+
+        <!-- ── TIMER VIEW ── -->
+        <div id="timerView">
+          <div class="time-inputs">
+            <div class="time-unit">
+              <button class="adj-btn" data-unit="hours"   data-dir="up">+</button>
+              <div class="digits-wrap">
+                <span class="big-digits" id="dispHours">00</span>
+                <span class="unit-label">hour</span>
+              </div>
+              <button class="adj-btn" data-unit="hours"   data-dir="down">-</button>
+            </div>
+            <div class="time-unit">
+              <button class="adj-btn" data-unit="minutes" data-dir="up">+</button>
+              <div class="digits-wrap">
+                <span class="big-digits" id="dispMinutes">00</span>
+                <span class="unit-label">min</span>
+              </div>
+              <button class="adj-btn" data-unit="minutes" data-dir="down">-</button>
+            </div>
+            <div class="time-unit">
+              <button class="adj-btn" data-unit="seconds" data-dir="up">+</button>
+              <div class="digits-wrap">
+                <span class="big-digits" id="dispSeconds">00</span>
+                <span class="unit-label">sec</span>
+              </div>
+              <button class="adj-btn" data-unit="seconds" data-dir="down">-</button>
+            </div>
+          </div>
+          <div class="controls">
+            <button class="ctrl-btn" id="timerPause">PAUSE</button>
+            <button class="ctrl-btn" id="timerStart">START</button>
+            <button class="ctrl-btn" id="timerReset">RESET</button>
+          </div>
+        </div>
+
+        <!-- ── POMODORO VIEW ── -->
+        <div id="pomodoroView" class="hidden">
+          <div class="page-scroll-area pomo-scroll">
+            <div class="pomodoro-layout">
+              <!-- Left: live countdown digits (stacked) -->
+              <div class="pomo-left">
+                <div class="pomo-time-row">
+                  <span class="big-digits pomo-digits" id="pomoDispH">00</span>
+                  <span class="unit-label">hour</span>
+                </div>
+                <div class="pomo-time-row">
+                  <span class="big-digits pomo-digits" id="pomoDispM">25</span>
+                  <span class="unit-label">min</span>
+                </div>
+                <div class="pomo-time-row">
+                  <span class="big-digits pomo-digits" id="pomoDispS">00</span>
+                  <span class="unit-label">sec</span>
+                </div>
+              </div>
+
+              <!-- Right: info + sessions + controls -->
+              <div class="pomo-right">
+                <!-- Phase labels (clickable to switch) -->
+                <div class="pomo-info">
+                  <div class="pomo-label active-pomo" id="pomoSessionLabel">Session Time</div>
+                  <div class="pomo-label"             id="pomoBreakLabel">Break Time</div>
+                </div>
+
+                <!-- Sessions count control -->
+                <div class="sessions-control">
+                  <span class="sessions-label">Sessions</span>
+                  <div class="sessions-adj">
+                    <button class="adj-btn sessions-adj-btn" id="sessionsDown">-</button>
+                    <span class="sessions-count" id="sessionsCount">4</span>
+                    <button class="adj-btn sessions-adj-btn" id="sessionsUp">+</button>
+                  </div>
+                  <span class="sessions-progress-label" id="sessionsProgress">1 / 4</span>
+                </div>
+
+                <div class="controls pomo-controls">
+                  <button class="ctrl-btn" id="pomoPause">PAUSE</button>
+                  <button class="ctrl-btn" id="pomoStart">START</button>
+                  <button class="ctrl-btn" id="pomoReset">RESET</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ===================== PAGE: TASKS ===================== -->
+      <section class="page" id="pageTasks">
+        <div class="page-scroll-area">
+          <h1 class="page-title">Tasks</h1>
+
+          <!-- Add task row -->
+          <div class="task-add-row">
+            <input
+              type="text"
+              class="task-input"
+              id="taskInput"
+              placeholder="What needs doing?"
+              maxlength="120"
+            />
+            <button class="task-add-btn" id="taskAddBtn">+</button>
+          </div>
+
+          <!-- TODAY -->
+          <div class="task-section">
+            <div class="task-section-header">
+              <span class="task-section-icon">📅</span>
+              <span class="task-section-title" id="todayDateLabel">Today</span>
+            </div>
+            <ul class="task-list" id="taskListToday"></ul>
+            <p class="task-empty-hint" id="emptyToday">No tasks for today yet.</p>
+          </div>
+
+          <!-- PENDING -->
+          <div class="task-section">
+            <div class="task-section-header">
+              <span class="task-section-icon">⏳</span>
+              <span class="task-section-title">Pending</span>
+            </div>
+            <ul class="task-list" id="taskListPending"></ul>
+            <p class="task-empty-hint" id="emptyPending">No pending tasks.</p>
+          </div>
+
+          <!-- COMPLETED -->
+          <div class="task-section">
+            <div class="task-section-header">
+              <span class="task-section-icon">✅</span>
+              <span class="task-section-title">Completed</span>
+            </div>
+            <ul class="task-list" id="taskListCompleted"></ul>
+            <p class="task-empty-hint" id="emptyCompleted">Nothing completed yet.</p>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- ===================== PAGE: SETTINGS ===================== -->
+      <section class="page" id="pageSettings">
+        <div class="page-scroll-area">
+          <h1 class="page-title">Settings</h1>
+
+          <!-- Currently selected emoji preview bubble -->
+          <div class="active-emoji-preview" id="activeEmojiPreview"></div>
+
+          <!-- Colour -->
+          <div class="settings-section">
+            <h2 class="settings-section-label">Colour</h2>
+            <div class="color-swatches">
+              <button class="swatch" data-color="white"  style="background:#FFFFFF;" title="White"></button>
+              <button class="swatch" data-color="black"  style="background:#1A1A1A;" title="Black"></button>
+              <button class="swatch" data-color="yellow" style="background:#F5C842;" title="Yellow"></button>
+              <button class="swatch" data-color="green"  style="background:#B5E05A;" title="Green"></button>
+              <button class="swatch" data-color="teal"   style="background:#7EDFCF;" title="Teal"></button>
+              <button class="swatch" data-color="purple" style="background:#B9A0E8;" title="Purple"></button>
+              <button class="swatch" data-color="pink"   style="background:#F06CA0;" title="Pink"></button>
+            </div>
+          </div>
+
+          <!-- Emoji grid -->
+          <div class="settings-section">
+            <h2 class="settings-section-label">Emoji</h2>
+<div class="emoji-grid" id="emojiGrid">
+
+  <button class="emoji-btn" data-emoji="camera">
+    <img src="assets/emoji/photography-camera-1--Streamline-Pixel.png" alt="camera"
+      onerror="this.parentElement.innerHTML='📷'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="tree">
+    <img src="assets/emoji/ecology-tree--Streamline-Pixel.png" alt="tree"
+      onerror="this.parentElement.innerHTML='🌲'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="rabbit">
+    <img src="assets/emoji/pet-animals-rabbit-2--Streamline-Pixel.png" alt="rabbit"
+      onerror="this.parentElement.innerHTML='🐰'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="music">
+    <img src="assets/emoji/music-headphones-human--Streamline-Pixel.png" alt="music"
+      onerror="this.parentElement.innerHTML='🎵'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="frog">
+    <img src="assets/emoji/pet-animals-frog-face--Streamline-Pixel.png" alt="frog"
+      onerror="this.parentElement.innerHTML='🐸'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="cans">
+    <img src="assets/emoji/business-products-climb-top--Streamline-Pixel.png" alt="cans"
+      onerror="this.parentElement.innerHTML='🥫'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="milk">
+    <img src="assets/emoji/food-drink-milk--Streamline-Pixel.png" alt="milk"
+      onerror="this.parentElement.innerHTML='🥛'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="turtle">
+    <img src="assets/emoji/pet-animals-turtle--Streamline-Pixel.png" alt="turtle"
+      onerror="this.parentElement.innerHTML='🐢'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="mountain">
+    <img src="assets/emoji/ecology-bush--Streamline-Pixel.png" alt="mountain"
+      onerror="this.parentElement.innerHTML='⛰️'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="arcade">
+    <img src="assets/emoji/entertainment-events-hobbies-game-machines-arcade-2--Streamline-Pixel.png" alt="arcade"
+      onerror="this.parentElement.innerHTML='🕹️'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="cookie">
+    <img src="assets/emoji/food-drink-sushi--Streamline-Pixel.png" alt="cookie"
+      onerror="this.parentElement.innerHTML='🍪'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="diamond">
+    <img src="assets/emoji/business-prodect-diamond--Streamline-Pixel.png" alt="diamond"
+      onerror="this.parentElement.innerHTML='💎'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="cherry">
+    <img src="assets/emoji/food-drink-fruit-cherry--Streamline-Pixel.png" alt="cherry"
+      onerror="this.parentElement.innerHTML='🍒'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="robot">
+    <img src="assets/emoji/coding-apps-websites-music-player--Streamline-Pixel.png" alt="robot"
+      onerror="this.parentElement.innerHTML='🤖'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="heart">
+    <img src="assets/emoji/social-rewards-heart-like-circle--Streamline-Pixel.png" alt="heart"
+      onerror="this.parentElement.innerHTML='❤️'"/>
+  </button>
+
+  <button class="emoji-btn" data-emoji="coffee">
+    <img src="assets/emoji/food-drink-tea--Streamline-Pixel.png" alt="coffee"
+      onerror="this.parentElement.innerHTML='☕'"/>
+  </button>
+
+</div>
+          </div>
+        </div>
+      </section>
+
+    </div><!-- /inner-card -->
+  </div><!-- /outer-shell -->
+
+  <!-- ===================== FLOATING MINI TIMER ===================== -->
+  <!--
+    Shown/hidden by JS when timer is running/stopped.
+    Draggable via mouse events on .mini-drag-handle.
+    Position saved in chrome.storage.local.
+  -->
+  <div class="mini-timer hidden" id="miniTimer">
+    <div class="mini-header">
+      <div class="mini-drag-handle" id="miniHandle" title="Drag to move">⠿⠿</div>
+      <button class="mini-toggle-btn" id="miniToggle" title="Collapse/Expand">
+        <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M7 10l5 5 5-5z"/></svg>
+      </button>
+    </div>
+    <div class="mini-body" id="miniBody">
+      <!-- Emoji icon (image or fallback unicode) -->
+      <div class="mini-emoji" id="miniEmoji">📷</div>
+
+      <!-- Timer display -->
+      <div class="mini-center">
+        <div class="mini-digits" id="miniDigits">00:00</div>
+        <div class="mini-unit">mins</div>
+      </div>
+
+      <!-- Pomodoro extras (session count + progress bar) — hidden in normal timer mode -->
+      <div class="mini-pomo-extras hidden" id="miniPomoExtras">
+        <div class="mini-pomo-row">
+          <span class="mini-session-label" id="miniSessionLabel">1/4</span>
+          <div class="mini-progress-track">
+            <div class="mini-progress-fill" id="miniProgressFill"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
