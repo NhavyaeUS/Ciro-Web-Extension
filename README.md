@@ -5,6 +5,14 @@ It includes a timer, pomodoro mode, floating widget, and task manager in a minim
 
 ---
 
+## Screenshots
+
+![Timer Main](assets/screenshots/timer-main.png)
+
+![Timer Settings](assets/screenshots/timer-settings.png)
+
+---
+
 ## Features
 
 * Timer with start, pause, and reset
